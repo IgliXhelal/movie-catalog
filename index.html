@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Browse, search and manage a personal movie collection.">
+  <title>Movie App</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="movies.js" defer></script>
+  <script src="movie-library.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="container header-content">
+      <a class="brand" href="#catalog"><span class="brand-icon" aria-hidden="true">▶</span> Movie App</a>
+      <nav aria-label="Main navigation">
+        <a href="#catalog" aria-current="page">Catalog</a>
+        <a href="#manage">Manage</a>
+        <button type="button" class="button primary" data-action="add">+ Add movie</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container" tabindex="-1">
+    <noscript><p class="notice">Enable JavaScript to browse and manage movies.</p></noscript>
+    <p id="storage-status" class="notice" role="status" hidden></p>
+
+    <section id="catalog" aria-labelledby="hero-title">
+      <div class="hero">
+        <div class="hero-copy">
+          <p class="overline" id="featured-label">Featured movie</p>
+          <h1 id="hero-title">Movie collection</h1>
+          <p id="hero-meta" class="hero-meta"></p>
+          <p id="hero-description">Browse the collection or add a film of your own.</p>
+          <div class="actions">
+            <button type="button" class="button primary" id="featured-details" data-action="details" hidden>View details <span aria-hidden="true">↗</span></button>
+            <button type="button" class="button secondary" data-action="add">Add a movie</button>
+          </div>
+        </div>
+        <div class="hero-art" id="hero-art" aria-hidden="true">
+          <div class="poster featured-poster"><img id="featured-poster" alt=""></div>
+        </div>
+      </div>
+
+      <section class="collection" aria-labelledby="collection-heading">
+        <div class="section-heading">
+          <h2 id="collection-heading">Movie collection</h2>
+          <p id="result-count" role="status"></p>
+        </div>
+        <div class="filters">
+          <label for="search">Search movies
+            <input id="search" type="search" placeholder="Search by title or director" autocomplete="off">
+          </label>
+          <label for="genre-filter">Genre
+            <select id="genre-filter"><option value="">All genres</option></select>
+          </label>
+        </div>
+        <div class="movie-grid" id="movie-grid"></div>
+        <p class="empty" id="catalog-empty" hidden>No movies match your search. Try another title, director, or genre.</p>
+      </section>
+    </section>
+
+    <section id="manage" class="manage" aria-labelledby="manage-title" hidden>
+      <div class="section-heading">
+        <h1 id="manage-title">Manage collection</h1>
+        <button type="button" class="button primary" data-action="add">+ Add movie</button>
+      </div>
+      <p class="muted">Changes are saved in this browser.</p>
+      <div class="stats">
+        <div class="panel"><h2>Total movies</h2><p id="total-movies" class="stat-value">0</p></div>
+        <div class="panel"><h2>Average rating</h2><p id="average-rating" class="stat-value">—</p></div>
+        <div class="panel"><h2>Genre breakdown</h2><ul id="genre-counts" class="genre-counts"></ul></div>
+      </div>
+      <div class="table-scroll panel" role="region" aria-label="Movie management table" tabindex="0">
+        <table>
+          <thead><tr>
+            <th scope="col">Title</th><th scope="col">Genre</th><th scope="col">Rating</th>
+            <th scope="col">Year</th><th scope="col">Director</th><th scope="col">Duration</th><th scope="col">Actions</th>
+          </tr></thead>
+          <tbody id="manage-rows"></tbody>
+        </table>
+        <p class="empty" id="manage-empty" hidden>Add a movie to start your collection.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container site-footer">Movie App <span>Personal movie catalog</span></footer>
+  <p id="toast" class="toast" role="status" hidden></p>
+
+  <dialog id="movie-details" aria-labelledby="details-title">
+    <div class="dialog-heading">
+      <h2 id="details-title"></h2>
+      <button type="button" class="button icon" data-action="close" aria-label="Close details" autofocus>×</button>
+    </div>
+    <div class="detail-grid">
+      <div class="poster detail-poster"><img id="details-poster" alt=""></div>
+      <div>
+        <p id="details-description"></p>
+        <dl id="details-facts" class="facts"></dl>
+      </div>
+    </div>
+    <div class="actions">
+      <button type="button" class="button primary" id="details-edit" data-action="edit">Edit movie</button>
+      <button type="button" class="button danger" id="details-delete" data-action="delete">Delete movie</button>
+    </div>
+  </dialog>
+
+  <dialog id="movie-editor" aria-labelledby="editor-title">
+    <div class="dialog-heading">
+      <h2 id="editor-title">Add movie</h2>
+      <button type="button" class="button icon" data-action="close" aria-label="Close editor">×</button>
+    </div>
+    <form id="movie-form" novalidate>
+      <div class="form-grid">
+        <div>
+          <label for="title">Title</label>
+          <input id="title" name="title" maxlength="120" required autofocus aria-describedby="title-error">
+          <small class="error" id="title-error" hidden></small>
+        </div>
+        <div>
+          <label for="director">Director</label>
+          <input id="director" name="director" maxlength="120" required aria-describedby="director-error">
+          <small class="error" id="director-error" hidden></small>
+        </div>
+        <div>
+          <label for="genre">Genre</label>
+          <select id="genre" name="genre" required aria-describedby="genre-error"><option value="">Select genre</option></select>
+          <small class="error" id="genre-error" hidden></small>
+        </div>
+        <div>
+          <label for="rating">Rating</label>
+          <select id="rating" name="rating" required aria-describedby="rating-error">
+            <option value="">Select rating</option>
+            <option value="1">1 / 5</option><option value="2">2 / 5</option><option value="3">3 / 5</option>
+            <option value="4">4 / 5</option><option value="5">5 / 5</option>
+          </select>
+          <small class="error" id="rating-error" hidden></small>
+        </div>
+        <div>
+          <label for="year">Release year</label>
+          <input id="year" name="year" type="number" min="1900" step="1" required aria-describedby="year-error">
+          <small class="error" id="year-error" hidden></small>
+        </div>
+        <div>
+          <label for="duration">Duration (minutes)</label>
+          <input id="duration" name="duration" type="number" min="1" step="1" required aria-describedby="duration-error">
+          <small class="error" id="duration-error" hidden></small>
+        </div>
+        <div class="full-width">
+          <label for="image">Poster URL</label>
+          <input id="image" name="image" type="url" placeholder="https://example.com/poster.jpg" maxlength="2000" required aria-describedby="image-error">
+          <small class="error" id="image-error" hidden></small>
+        </div>
+        <div class="full-width">
+          <label for="description">Description</label>
+          <textarea id="description" name="description" rows="3" maxlength="1200" required aria-describedby="description-error"></textarea>
+          <small class="error" id="description-error" hidden></small>
+        </div>
+      </div>
+      <p id="form-status" class="error" role="alert" hidden></p>
+      <div class="actions">
+        <button type="submit" id="save-movie" class="button primary">Add movie</button>
+        <button type="button" class="button secondary" data-action="close">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="delete-dialog" aria-labelledby="delete-title" aria-describedby="delete-message">
+    <h2 id="delete-title">Delete movie?</h2>
+    <p id="delete-message"></p>
+    <p id="delete-status" class="error" role="alert" hidden></p>
+    <div class="actions">
+      <button type="button" class="button secondary" data-action="close" autofocus>Cancel</button>
+      <button type="button" class="button danger" data-action="confirm-delete">Delete movie</button>
+    </div>
+  </dialog>
+
+  <template id="movie-card">
+    <article class="movie-card">
+      <div class="poster card-poster"><img alt="" loading="lazy"><span class="rating"></span></div>
+      <div class="card-content">
+        <p class="card-meta"></p>
+        <h3></h3>
+        <button type="button" class="card-link" data-action="details">View details <span aria-hidden="true">↗</span></button>
+      </div>
+    </article>
+  </template>
+</body>
+</html>
