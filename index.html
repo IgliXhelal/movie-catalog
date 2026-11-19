@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Browse, search and manage a personal movie collection.">
+  <meta name="description" content="Discover movies, explore their details, and rate the films you watch.">
   <title>Movie App</title>
   <link rel="stylesheet" href="styles.css">
   <script src="movies.js" defer></script>
@@ -17,8 +17,8 @@
       <a class="brand" href="#catalog"><span class="brand-icon" aria-hidden="true">▶</span> Movie App</a>
       <nav aria-label="Main navigation">
         <a href="#catalog" aria-current="page">Catalog</a>
-        <a href="#manage">Manage</a>
-        <button type="button" class="button primary" data-action="add">+ Add movie</button>
+        <a href="#admin">Admin</a>
+        <button type="button" class="button secondary" id="admin-logout" hidden>Sign out</button>
       </nav>
     </div>
   </header>
@@ -26,6 +26,7 @@
   <main id="main" class="container" tabindex="-1">
     <noscript><p class="notice">Enable JavaScript to browse and manage movies.</p></noscript>
     <p id="storage-status" class="notice" role="status" hidden></p>
+    <p id="ratings-status" class="notice" role="status" hidden></p>
 
     <section id="catalog" aria-labelledby="hero-title">
       <div class="hero">
@@ -33,10 +34,9 @@
           <p class="overline" id="featured-label">Featured movie</p>
           <h1 id="hero-title">Movie collection</h1>
           <p id="hero-meta" class="hero-meta"></p>
-          <p id="hero-description">Browse the collection or add a film of your own.</p>
+          <p id="hero-description">Explore the catalog and rate the films you watch.</p>
           <div class="actions">
             <button type="button" class="button primary" id="featured-details" data-action="details" hidden>View details <span aria-hidden="true">↗</span></button>
-            <button type="button" class="button secondary" data-action="add">Add a movie</button>
           </div>
         </div>
         <div class="hero-art" id="hero-art" aria-hidden="true">
@@ -62,21 +62,37 @@
       </section>
     </section>
 
+    <section id="admin-login" class="login-panel panel" aria-labelledby="login-title" hidden>
+      <h1 id="login-title">Admin sign in</h1>
+      <p class="muted" id="login-help">Front-end demonstration. Admin changes and visitor ratings are saved in this browser.</p>
+      <p class="demo-credentials">Demo username <strong>admin</strong> · Password <strong>movie123</strong></p>
+      <form id="admin-login-form" novalidate aria-describedby="login-help">
+        <label for="admin-username">Username</label>
+        <input id="admin-username" name="username" autocomplete="off" required aria-describedby="username-error">
+        <small id="username-error" class="error" hidden></small>
+        <label for="admin-password">Password</label>
+        <input id="admin-password" name="password" type="password" autocomplete="off" required aria-describedby="password-error">
+        <small id="password-error" class="error" hidden></small>
+        <p id="login-error" class="error" role="alert" hidden></p>
+        <div class="actions"><button type="submit" class="button primary">Sign in</button></div>
+      </form>
+    </section>
+
     <section id="manage" class="manage" aria-labelledby="manage-title" hidden>
       <div class="section-heading">
-        <h1 id="manage-title">Manage collection</h1>
-        <button type="button" class="button primary" data-action="add">+ Add movie</button>
+        <h1 id="manage-title">Admin dashboard</h1>
+        <button type="button" class="button primary" data-action="add" data-admin hidden>+ Add movie</button>
       </div>
-      <p class="muted">Changes are saved in this browser.</p>
+      <p class="muted">Manage the movie catalog. Changes apply to this browser's demo.</p>
       <div class="stats">
         <div class="panel"><h2>Total movies</h2><p id="total-movies" class="stat-value">0</p></div>
-        <div class="panel"><h2>Average rating</h2><p id="average-rating" class="stat-value">—</p></div>
+        <div class="panel"><h2>Your average rating</h2><p id="average-rating" class="stat-value">—</p><p id="rated-count" class="muted"></p></div>
         <div class="panel"><h2>Genre breakdown</h2><ul id="genre-counts" class="genre-counts"></ul></div>
       </div>
       <div class="table-scroll panel" role="region" aria-label="Movie management table" tabindex="0">
         <table>
           <thead><tr>
-            <th scope="col">Title</th><th scope="col">Genre</th><th scope="col">Rating</th>
+            <th scope="col">Title</th><th scope="col">Genre</th><th scope="col">Your rating</th>
             <th scope="col">Year</th><th scope="col">Director</th><th scope="col">Duration</th><th scope="col">Actions</th>
           </tr></thead>
           <tbody id="manage-rows"></tbody>
@@ -86,7 +102,7 @@
     </section>
   </main>
 
-  <footer class="container site-footer">Movie App <span>Personal movie catalog</span></footer>
+  <footer class="container site-footer">Movie App <span>Discover and rate movies</span></footer>
   <p id="toast" class="toast" role="status" hidden></p>
 
   <dialog id="movie-details" aria-labelledby="details-title">
@@ -99,9 +115,18 @@
       <div>
         <p id="details-description"></p>
         <dl id="details-facts" class="facts"></dl>
+        <div class="detail-rating">
+          <label for="details-rating">Your rating</label>
+          <select id="details-rating" data-rating aria-describedby="rating-help">
+            <option value="">Not rated</option>
+            <option value="1">1 / 5</option><option value="2">2 / 5</option><option value="3">3 / 5</option>
+            <option value="4">4 / 5</option><option value="5">5 / 5</option>
+          </select>
+          <small id="rating-help" class="muted">Saved in this browser.</small>
+        </div>
       </div>
     </div>
-    <div class="actions">
+    <div class="actions" data-admin hidden>
       <button type="button" class="button primary" id="details-edit" data-action="edit">Edit movie</button>
       <button type="button" class="button danger" id="details-delete" data-action="delete">Delete movie</button>
     </div>
@@ -128,15 +153,6 @@
           <label for="genre">Genre</label>
           <select id="genre" name="genre" required aria-describedby="genre-error"><option value="">Select genre</option></select>
           <small class="error" id="genre-error" hidden></small>
-        </div>
-        <div>
-          <label for="rating">Rating</label>
-          <select id="rating" name="rating" required aria-describedby="rating-error">
-            <option value="">Select rating</option>
-            <option value="1">1 / 5</option><option value="2">2 / 5</option><option value="3">3 / 5</option>
-            <option value="4">4 / 5</option><option value="5">5 / 5</option>
-          </select>
-          <small class="error" id="rating-error" hidden></small>
         </div>
         <div>
           <label for="year">Release year</label>
@@ -183,6 +199,14 @@
       <div class="card-content">
         <p class="card-meta"></p>
         <h3></h3>
+        <div class="card-rating">
+          <label>Your rating</label>
+          <select data-rating>
+            <option value="">Not rated</option>
+            <option value="1">1 / 5</option><option value="2">2 / 5</option><option value="3">3 / 5</option>
+            <option value="4">4 / 5</option><option value="5">5 / 5</option>
+          </select>
+        </div>
         <button type="button" class="card-link" data-action="details">View details <span aria-hidden="true">↗</span></button>
       </div>
     </article>
