@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Discover movies, explore their details, and rate the films you watch.">
   <title>Movie App</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="movies.js" defer></script>
-  <script src="movie-library.js" defer></script>
-  <script src="app.js" defer></script>
+  <link rel="stylesheet" href="styles/site.css">
+  <script src="scripts/movies.js" defer></script>
+  <script src="scripts/movie-library.js" defer></script>
+  <script src="scripts/index.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -17,8 +17,10 @@
       <a class="brand" href="#catalog"><span class="brand-icon" aria-hidden="true">▶</span> Movie App</a>
       <nav aria-label="Main navigation">
         <a href="#catalog" aria-current="page">Catalog</a>
-        <a href="#admin">Admin</a>
-        <button type="button" class="button secondary" id="admin-logout" hidden>Sign out</button>
+        <a href="#collection" data-user hidden>My collection</a>
+        <a href="#admin" data-admin hidden>Manage movies</a>
+        <button type="button" class="button primary" id="sign-in-button" data-action="signin">Sign in</button>
+        <button type="button" class="button secondary" id="sign-out-button" hidden>Sign out</button>
       </nav>
     </div>
   </header>
@@ -28,8 +30,8 @@
     <p id="storage-status" class="notice" role="status" hidden></p>
     <p id="ratings-status" class="notice" role="status" hidden></p>
 
-    <section id="catalog" aria-labelledby="hero-title">
-      <div class="hero">
+    <section id="catalog" aria-labelledby="collection-heading">
+      <div class="hero" id="catalog-hero">
         <div class="hero-copy">
           <p class="overline" id="featured-label">Featured movie</p>
           <h1 id="hero-title">Movie collection</h1>
@@ -62,22 +64,6 @@
       </section>
     </section>
 
-    <section id="admin-login" class="login-panel panel" aria-labelledby="login-title" hidden>
-      <h1 id="login-title">Admin sign in</h1>
-      <p class="muted" id="login-help">Front-end demonstration. Admin changes and visitor ratings are saved in this browser.</p>
-      <p class="demo-credentials">Demo username <strong>admin</strong> · Password <strong>movie123</strong></p>
-      <form id="admin-login-form" novalidate aria-describedby="login-help">
-        <label for="admin-username">Username</label>
-        <input id="admin-username" name="username" autocomplete="off" required aria-describedby="username-error">
-        <small id="username-error" class="error" hidden></small>
-        <label for="admin-password">Password</label>
-        <input id="admin-password" name="password" type="password" autocomplete="off" required aria-describedby="password-error">
-        <small id="password-error" class="error" hidden></small>
-        <p id="login-error" class="error" role="alert" hidden></p>
-        <div class="actions"><button type="submit" class="button primary">Sign in</button></div>
-      </form>
-    </section>
-
     <section id="manage" class="manage" aria-labelledby="manage-title" hidden>
       <div class="section-heading">
         <h1 id="manage-title">Admin dashboard</h1>
@@ -105,6 +91,24 @@
   <footer class="container site-footer">Movie App <span>Discover and rate movies</span></footer>
   <p id="toast" class="toast" role="status" hidden></p>
 
+  <dialog id="sign-in-dialog" class="sign-in-dialog" aria-labelledby="login-title" aria-describedby="login-help">
+    <div class="dialog-heading">
+      <h2 id="login-title">Sign in</h2>
+      <button type="button" class="button icon" data-action="close" aria-label="Close sign in">×</button>
+    </div>
+    <p class="muted" id="login-help">Sign in to access your collection.</p>
+    <form id="sign-in-form" novalidate>
+      <label for="signin-username">Username</label>
+      <input id="signin-username" name="username" autocomplete="username" required autofocus aria-describedby="username-error">
+      <small id="username-error" class="error" hidden></small>
+      <label for="signin-password">Password</label>
+      <input id="signin-password" name="password" type="password" autocomplete="current-password" required aria-describedby="password-error">
+      <small id="password-error" class="error" hidden></small>
+      <p id="login-error" class="error" role="alert" hidden></p>
+      <button type="submit" class="button primary sign-in-submit">Sign in</button>
+    </form>
+  </dialog>
+
   <dialog id="movie-details" aria-labelledby="details-title">
     <div class="dialog-heading">
       <h2 id="details-title"></h2>
@@ -117,12 +121,13 @@
         <dl id="details-facts" class="facts"></dl>
         <div class="detail-rating">
           <label for="details-rating">Your rating</label>
-          <select id="details-rating" data-rating aria-describedby="rating-help">
+          <select id="details-rating" data-rating data-user hidden aria-describedby="rating-help">
             <option value="">Not rated</option>
             <option value="1">1 / 5</option><option value="2">2 / 5</option><option value="3">3 / 5</option>
             <option value="4">4 / 5</option><option value="5">5 / 5</option>
           </select>
-          <small id="rating-help" class="muted">Saved in this browser.</small>
+          <button type="button" class="button secondary" id="details-signin" data-action="signin">Sign in to rate</button>
+          <small id="rating-help" class="muted" data-user hidden>Saved in this browser.</small>
         </div>
       </div>
     </div>
@@ -206,6 +211,7 @@
             <option value="1">1 / 5</option><option value="2">2 / 5</option><option value="3">3 / 5</option>
             <option value="4">4 / 5</option><option value="5">5 / 5</option>
           </select>
+          <button type="button" class="button secondary card-signin" data-action="signin">Sign in to rate</button>
         </div>
         <button type="button" class="card-link" data-action="details">View details <span aria-hidden="true">↗</span></button>
       </div>
