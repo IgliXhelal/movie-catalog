@@ -2,6 +2,8 @@
 
 A movie catalog built with HTML, CSS, and JavaScript. Visitors can browse movies, filter by genre, view details, and save their own ratings. The admin view provides movie creation, editing, and deletion.
 
+[Live demo](https://igli-movie-catalog.pages.dev/)
+
 ## Admin demo
 
 Open **Admin** and sign in with username `admin` and password `movie123`. This front-end login demonstrates the two roles. Movie changes and ratings are saved in the current browser, and admin sign-in lasts until a reload or sign-out. Starter movie ratings are labeled **Sample**. Visitor ratings are labeled **Your rating**.
