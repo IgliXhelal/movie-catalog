@@ -178,6 +178,14 @@ input::placeholder { color: #aea4b2; }
   font-weight: 650;
 }
 .card-link:hover { text-decoration: underline; }
+.card-rating { margin-block: 4px 7px; }
+.card-rating label { color: var(--muted); font-size: .82rem; }
+.card-rating select { min-height: 38px; }
+.detail-rating { margin-top: 18px; }
+.login-panel { max-width: 480px; padding: 25px; margin: 40px auto; }
+.login-panel h1 { margin-bottom: 12px; }
+.demo-credentials { margin-block: 12px 20px; font-size: .9rem; color: var(--accent); }
+#admin-login-form label { margin-top: 13px; }
 .empty, .notice {
   padding: 16px;
   color: var(--muted);
