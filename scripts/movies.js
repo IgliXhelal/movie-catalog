@@ -1,0 +1,222 @@
+const starterMovies = [
+  {
+    "id": "1",
+    "title": "The Shawshank Redemption",
+    "genre": "Drama",
+    "image": "https://m.media-amazon.com/images/M/MV5BNDE3ODcxYzMtY2YzZC00NmNlLWJiNDMtZDViZWM2MzIxZDYwXkEyXkFqcGdeQXVyNjAwNDUxODI@._V1_.jpg",
+    "director": "Frank Darabont",
+    "description": "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
+    "rating": 5,
+    "year": 1994,
+    "duration": 142
+  },
+  {
+    "id": "2",
+    "title": "The Godfather",
+    "genre": "Drama",
+    "image": "https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_.jpg",
+    "director": "Francis Ford Coppola",
+    "description": "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
+    "rating": 5,
+    "year": 1972,
+    "duration": 175
+  },
+  {
+    "id": "3",
+    "title": "The Dark Knight",
+    "genre": "Action",
+    "image": "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_.jpg",
+    "director": "Christopher Nolan",
+    "description": "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests.",
+    "rating": 5,
+    "year": 2008,
+    "duration": 152
+  },
+  {
+    "id": "4",
+    "title": "Pulp Fiction",
+    "genre": "Thriller",
+    "image": "https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_.jpg",
+    "director": "Quentin Tarantino",
+    "description": "The lives of two mob hitmen, a boxer, a gangster and his wife intertwine in four tales of violence and redemption.",
+    "rating": 4,
+    "year": 1994,
+    "duration": 154
+  },
+  {
+    "id": "5",
+    "title": "Inception",
+    "genre": "Sci-Fi",
+    "image": "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_.jpg",
+    "director": "Christopher Nolan",
+    "description": "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
+    "rating": 4,
+    "year": 2010,
+    "duration": 148
+  },
+  {
+    "id": "6",
+    "title": "The Matrix",
+    "genre": "Sci-Fi",
+    "image": "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_.jpg",
+    "director": "Lana Wachowski, Lilly Wachowski",
+    "description": "A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.",
+    "rating": 4,
+    "year": 1999,
+    "duration": 136
+  },
+  {
+    "id": "7",
+    "title": "Forrest Gump",
+    "genre": "Drama",
+    "image": "https://m.media-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWJhNzYtMmZiYmEyNmU1NjMzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_.jpg",
+    "director": "Robert Zemeckis",
+    "description": "The presidencies of Kennedy and Johnson, the Vietnam War, the Watergate scandal and other historical events unfold from the perspective of an Alabama man with an IQ of 75.",
+    "rating": 4,
+    "year": 1994,
+    "duration": 142
+  },
+  {
+    "id": "8",
+    "title": "The Lord of the Rings: The Fellowship of the Ring",
+    "genre": "Fantasy",
+    "image": "https://m.media-amazon.com/images/M/MV5BN2EyZjM3NzUtNWUzMi00MTgxLWI0NTctMzY4M2VlOTdjZWRiXkEyXkFqcGdeQXVyNDUzOTQ5MjY@._V1_.jpg",
+    "director": "Peter Jackson",
+    "description": "A meek Hobbit from the Shire and eight companions set out on a journey to destroy the powerful One Ring and save Middle-earth from the Dark Lord Sauron.",
+    "rating": 5,
+    "year": 2001,
+    "duration": 178
+  },
+  {
+    "id": "9",
+    "title": "Fight Club",
+    "genre": "Drama",
+    "image": "https://m.media-amazon.com/images/M/MV5BNDIzNDU0YzEtYzE5Ni00ZjlkLTk5ZjgtNjM3NWE4YzA3Nzk3XkEyXkFqcGdeQXVyMjUzOTY1NTc@._V1_.jpg",
+    "director": "David Fincher",
+    "description": "An insomniac office worker and a devil-may-care soapmaker form an underground fight club that evolves into something much, much more.",
+    "rating": 4,
+    "year": 1999,
+    "duration": 139
+  },
+  {
+    "id": "10",
+    "title": "The Avengers",
+    "genre": "Action",
+    "image": "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg",
+    "director": "Joss Whedon",
+    "description": "Earth's mightiest heroes must come together and learn to fight as a team if they are going to stop the mischievous Loki and his alien army from enslaving humanity.",
+    "rating": 4,
+    "year": 2012,
+    "duration": 143
+  },
+  {
+    "id": "11",
+    "title": "Interstellar",
+    "genre": "Sci-Fi",
+    "image": "https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg",
+    "director": "Christopher Nolan",
+    "description": "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+    "rating": 4,
+    "year": 2014,
+    "duration": 169
+  },
+  {
+    "id": "12",
+    "title": "The Silence of the Lambs",
+    "genre": "Thriller",
+    "image": "https://m.media-amazon.com/images/M/MV5BNjNhZTk0ZmEtNjJhMi00YzFlLWE1MmEtYzM5NWFkMWU3Y2UxXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_.jpg",
+    "director": "Jonathan Demme",
+    "description": "A young F.B.I. cadet must receive the help of an incarcerated and manipulative cannibal killer to help catch another serial killer, a madman who skins his victims.",
+    "rating": 4,
+    "year": 1991,
+    "duration": 118
+  },
+  {
+    "id": "13",
+    "title": "Schindler's List",
+    "genre": "Drama",
+    "image": "https://m.media-amazon.com/images/M/MV5BNDE4OTMxMTctNmRhYy00NWE2LTg3YzItYTk3M2UwOTU5Njg4XkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_.jpg",
+    "director": "Steven Spielberg",
+    "description": "In German-occupied Poland during World War II, Oskar Schindler gradually becomes concerned for his Jewish workforce after witnessing their persecution by the Nazi Germans.",
+    "rating": 5,
+    "year": 1993,
+    "duration": 195
+  },
+  {
+    "id": "14",
+    "title": "The Lion King",
+    "genre": "Animation",
+    "image": "https://m.media-amazon.com/images/M/MV5BYTYxNGMyZTYtMjE3MS00MzNjLWFjNmYtMDk3N2FmM2JiM2M1XkEyXkFqcGdeQXVyNjY5NDU4NzI@._V1_.jpg",
+    "director": "Roger Allers, Rob Minkoff",
+    "description": "Lion prince Simba and his father are targeted by his bitter uncle, who wants to ascend the throne himself.",
+    "rating": 4,
+    "year": 1994,
+    "duration": 88
+  },
+  {
+    "id": "15",
+    "title": "Gladiator",
+    "genre": "Action",
+    "image": "https://m.media-amazon.com/images/M/MV5BMDliMmNhNDEtODUyOS00MjNlLTgxODEtN2U3NzIxMGVkZTA1L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_.jpg",
+    "director": "Ridley Scott",
+    "description": "A former Roman General sets out to exact vengeance against the corrupt emperor who murdered his family and sent him into slavery.",
+    "rating": 4,
+    "year": 2000,
+    "duration": 155
+  },
+  {
+    "id": "16",
+    "title": "Titanic",
+    "genre": "Romance",
+    "image": "https://m.media-amazon.com/images/M/MV5BMDdmZGU3NDQtY2E5My00ZTliLWIzOTUtMTY4ZGI1YjdiNjk3XkEyXkFqcGdeQXVyNTA4NzY1MzY@._V1_.jpg",
+    "director": "James Cameron",
+    "description": "A seventeen-year-old aristocrat falls in love with a kind but poor artist aboard the luxurious, ill-fated R.M.S. Titanic.",
+    "rating": 4,
+    "year": 1997,
+    "duration": 194
+  },
+  {
+    "id": "17",
+    "title": "The Departed",
+    "genre": "Thriller",
+    "image": "https://m.media-amazon.com/images/M/MV5BMTI1MTY2OTIxNV5BMl5BanBnXkFtZTYwNjQ4NjY3._V1_.jpg",
+    "director": "Martin Scorsese",
+    "description": "An undercover cop and a mole in the police attempt to identify each other while infiltrating an Irish gang in South Boston.",
+    "rating": 4,
+    "year": 2006,
+    "duration": 151
+  },
+  {
+    "id": "18",
+    "title": "Avatar",
+    "genre": "Sci-Fi",
+    "image": "https://m.media-amazon.com/images/M/MV5BZDA0OGQxNTItMDZkMC00N2UyLTg3MzMtMjFkYTkxNGVkZWFhXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg",
+    "director": "James Cameron",
+    "description": "A paraplegic Marine dispatched to the moon Pandora on a unique mission becomes torn between following his orders and protecting the world he feels is his home.",
+    "rating": 3,
+    "year": 2009,
+    "duration": 162
+  },
+  {
+    "id": "19",
+    "title": "The Prestige",
+    "genre": "Thriller",
+    "image": "https://m.media-amazon.com/images/M/MV5BMjA4NDI0MTIxNF5BMl5BanBnXkFtZTYwNTM0MzY2._V1_.jpg",
+    "director": "Christopher Nolan",
+    "description": "After a tragic accident, two stage magicians engage in a battle to create the ultimate illusion while sacrificing everything they have to outwit each other.",
+    "rating": 4,
+    "year": 2006,
+    "duration": 130
+  },
+  {
+    "id": "20",
+    "title": "Whiplash",
+    "genre": "Drama",
+    "image": "https://m.media-amazon.com/images/M/MV5BOTA5NDZlZGUtMjAxOS00YTRkLTkwYmMtYWQ0NWEwZDZiNjEzXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg",
+    "director": "Damien Chazelle",
+    "description": "A promising young drummer enrolls at a cut-throat music conservatory where his dreams of greatness are mentored by an instructor who will stop at nothing to realize a student's potential.",
+    "rating": 4,
+    "year": 2014,
+    "duration": 106
+  }
+];
